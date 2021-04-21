@@ -1,9 +1,9 @@
 venv/
 
-# Django #
-*.log
-*.pot
-*.pyc
-__pycache__
-db.sqlite3
-media
+.idea/
+rental_api/__pycache__/
+rental_api/app_models/__pycache__/
+rental_api/app_models/migrations/__pycache__/
+rental_api/app_models/tests/__pycache__/
+rental_api/rental_api/__pycache__/settings.cpython-39.pyc
+
