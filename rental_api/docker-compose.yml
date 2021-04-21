@@ -1,0 +1,45 @@
+version: '3.7'
+
+services:
+  db:
+    image: dexels/dvdrental:1
+    environment:
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5432:5432"
+    networks:
+      - djangonetwork
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
+    networks:
+      - djangonetwork
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile-application
+    command: >
+      bash -c "sleep 12 &&
+      python manage.py makemigrations &&
+      python manage.py migrate --fake &&
+      python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/rental_api
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    links:
+      - db
+    networks:
+      - djangonetwork
+
+networks:
+      djangonetwork:
+          driver: bridge
